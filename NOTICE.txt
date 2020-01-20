@@ -1,0 +1,2 @@
+Sclera - Regular Expression Matcher
+Copyright 2012 - 2020 Sclera, Inc.
