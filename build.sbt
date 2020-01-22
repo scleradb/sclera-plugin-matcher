@@ -4,6 +4,8 @@ description := "Add-on package that enables Sclera to efficiently and flexibly a
 
 version := "4.0-SNAPSHOT"
 
+homepage := Some(url("https://github.com/scleradb/sclera-plugin-matcher"))
+
 organization := "com.scleradb"
 
 organizationName := "Sclera, Inc."
