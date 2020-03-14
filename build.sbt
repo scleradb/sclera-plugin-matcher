@@ -20,7 +20,11 @@ licenses := Seq("Apache License version 2.0" -> url("https://www.apache.org/lice
 
 libraryDependencies ++= Seq(
     "com.scleradb" %% "sclera-core" % "4.0-SNAPSHOT" % "provided",
-    "com.scleradb" %% "sclera-automata" % "4.0-SNAPSHOT" % "provided"
+    "com.scleradb" %% "sclera-automata" % "4.0-SNAPSHOT" % "provided",
+    "com.scleradb" %% "sclera-config" % "4.0-SNAPSHOT" % "test",
+    "com.scleradb" %% "sclera-jdbc" % "latest.integration" % "test",
+    "com.scleradb" %% "sclera-sqltests-runner" % "4.0-SNAPSHOT" % "test",
+    "org.scalatest" %% "scalatest" % "3.1.0" % "test"
 )
 
 scalacOptions ++= Seq(
@@ -28,3 +32,5 @@ scalacOptions ++= Seq(
 )
 
 exportJars := true
+
+fork in Test := true
