@@ -35,9 +35,7 @@ extends AnyFunSpec with CancelAfterFailure with SqlTestRunner {
     describe("JDBC driver") {
         it("should return a valid connection") {
             val props: Properties = new Properties()
-            props.setProperty("schemaDbms", "H2MEM")
-            props.setProperty("schemaDb", "scleratests")
-            props.setProperty("tempDb", "scleratests")
+            props.setProperty("checkSchema", "false");
 
             conn = DriverManager.getConnection(jdbcUrl, props)
         }
