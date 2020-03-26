@@ -29,22 +29,25 @@ class SeqMatcherTestSuite
 extends AnyFunSpec with CancelAfterFailure with SqlTestRunner {
     val jdbcUrl: String = "jdbc:scleradb"
 
-    val props: Properties = new Properties()
-    props.setProperty("schemaDbms", "H2MEM")
-    props.setProperty("schemaDb", "scleratests")
-    props.setProperty("tempDb", "scleratests")
-
     var conn: java.sql.Connection = null
     var stmt: java.sql.Statement = null
 
     describe("JDBC driver") {
         it("should return a valid connection") {
+            val props: Properties = new Properties()
+            props.setProperty("schemaDbms", "H2MEM")
+            props.setProperty("schemaDb", "scleratests")
+            props.setProperty("tempDb", "scleratests")
+
             conn = DriverManager.getConnection(jdbcUrl, props)
         }
 
         it("should create a valid statement") {
             stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
                                         java.sql.ResultSet.CONCUR_READ_ONLY)
+        }
+
+        it("should initialize schema") {
             stmt.executeUpdate("create schema")
         }
 
