@@ -33,19 +33,10 @@ extends AnyFunSpec with CancelAfterFailure with SqlTestRunner {
     var stmt: java.sql.Statement = null
 
     describe("JDBC driver") {
-        it("should return a valid connection") {
-            val props: Properties = new Properties()
-            props.setProperty("checkSchema", "false");
-
-            conn = DriverManager.getConnection(jdbcUrl, props)
-        }
-
-        it("should create a valid statement") {
+        it("should setup") {
+            conn = DriverManager.getConnection(jdbcUrl)
             stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
                                         java.sql.ResultSet.CONCUR_READ_ONLY)
-        }
-
-        it("should initialize schema if needed") {
             if( conn.getWarnings() != null ) stmt.executeUpdate("create schema")
         }
 
