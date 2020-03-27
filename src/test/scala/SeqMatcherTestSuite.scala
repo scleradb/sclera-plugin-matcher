@@ -45,8 +45,8 @@ extends AnyFunSpec with CancelAfterFailure with SqlTestRunner {
                                         java.sql.ResultSet.CONCUR_READ_ONLY)
         }
 
-        it("should initialize schema") {
-            stmt.executeUpdate("create schema")
+        it("should initialize schema if needed") {
+            if( conn.getWarnings() != null ) stmt.executeUpdate("create schema")
         }
 
         it("should execute SEQ script") {
