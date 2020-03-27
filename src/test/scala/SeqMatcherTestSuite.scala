@@ -20,8 +20,8 @@ package com.scleradb.plugin.analytics.sequence.matcher.test
 import org.scalatest.CancelAfterFailure
 import org.scalatest.funspec.AnyFunSpec
 
-import java.util.Properties
 import java.sql.{Connection, DriverManager, Statement, ResultSet, SQLException}
+import com.scleradb.interfaces.jdbc.ScleraJdbcDriver
 
 import com.scleradb.sqltests.runner.SqlTestRunner
 
@@ -29,14 +29,22 @@ class SeqMatcherTestSuite
 extends AnyFunSpec with CancelAfterFailure with SqlTestRunner {
     val jdbcUrl: String = "jdbc:scleradb"
 
-    var conn: java.sql.Connection = null
-    var stmt: java.sql.Statement = null
+    var conn: Connection = null
+    var stmt: Statement = null
+
+    def getConnection(): Connection = if( isTravis ) {
+        // Travis CI does not like JDBC
+        val driver: ScleraJdbcDriver = new ScleraJdbcDriver
+        driver.connect(jdbcUrl, new java.util.Properties())
+    } else DriverManager.getConnection(jdbcUrl)
 
     describe("JDBC driver") {
         it("should setup") {
-            conn = DriverManager.getConnection(jdbcUrl)
-            stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
-                                        java.sql.ResultSet.CONCUR_READ_ONLY)
+            conn = getConnection()
+            stmt = conn.createStatement(
+                ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY
+            )
+
             if( conn.getWarnings() != null ) stmt.executeUpdate("create schema")
         }
 
@@ -47,7 +55,7 @@ extends AnyFunSpec with CancelAfterFailure with SqlTestRunner {
         it("should close the statement") {
             stmt.close()
 
-            val e: Throwable = intercept[java.sql.SQLException] {
+            val e: Throwable = intercept[SQLException] {
                 stmt.executeQuery("select 1::int as foo;")
             }
 
@@ -57,9 +65,10 @@ extends AnyFunSpec with CancelAfterFailure with SqlTestRunner {
         it("should close the connection") {
             conn.close()
 
-            val e: Throwable = intercept[java.sql.SQLException] {
-                conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
-                                     java.sql.ResultSet.CONCUR_READ_ONLY)
+            val e: Throwable = intercept[SQLException] {
+                conn.createStatement(
+                    ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY
+                )
             }
 
             assert(e.getMessage() === "Connection closed")
