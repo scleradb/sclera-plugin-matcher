@@ -6,6 +6,8 @@ scala:
 jdk:
   - openjdk11
 
+sudo: required
+
 branches:
   only:
     - master
