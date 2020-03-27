@@ -20,9 +20,10 @@ package com.scleradb.plugin.analytics.sequence.matcher.test
 import org.scalatest.CancelAfterFailure
 import org.scalatest.funspec.AnyFunSpec
 
+import java.util.Properties
 import java.sql.{Connection, DriverManager, Statement, ResultSet, SQLException}
-import com.scleradb.interfaces.jdbc.ScleraJdbcDriver
 
+import com.scleradb.interfaces.jdbc.ScleraJdbcDriver
 import com.scleradb.sqltests.runner.SqlTestRunner
 
 class SeqMatcherTestSuite
@@ -32,15 +33,20 @@ extends AnyFunSpec with CancelAfterFailure with SqlTestRunner {
     var conn: Connection = null
     var stmt: Statement = null
 
-    def getConnection(): Connection = if( isTravis ) {
+    def getConnection(props: Properties): Connection = if( isTravis ) {
         // Travis CI does not like JDBC
         val driver: ScleraJdbcDriver = new ScleraJdbcDriver
-        driver.connect(jdbcUrl, new java.util.Properties())
-    } else DriverManager.getConnection(jdbcUrl)
+        driver.connect(jdbcUrl, props)
+    } else DriverManager.getConnection(jdbcUrl, props)
 
     describe("JDBC driver") {
         it("should setup") {
-            conn = getConnection()
+            val props: Properties = new Properties()
+            props.setProperty("schemaDbms", "H2MEM")
+            props.setProperty("schemaDb", "scleratests")
+            props.setProperty("tempDb", "scleratests")
+
+            conn = getConnection(props)
             stmt = conn.createStatement(
                 ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY
             )
