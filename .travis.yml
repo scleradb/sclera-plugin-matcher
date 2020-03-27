@@ -10,10 +10,6 @@ branches:
   only:
     - master
 
-after_script:
-  - sbt "show test:fullClasspath"
-  - echo $JAVA_OPTS
-
 cache:
   directories:
     - $HOME/.ivy2/cache
