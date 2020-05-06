@@ -1,6 +1,8 @@
 # Sclera - Regular Expression Matcher
 
 [![Build Status](https://travis-ci.org/scleradb/sclera-plugin-matcher.svg?branch=master)](https://travis-ci.org/scleradb/sclera-plugin-matcher)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.scleradb/sclera-plugin-matcher_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.scleradb/sclera-plugin-matcher_2.13)
+[![scaladoc](https://javadoc.io/badge2/com.scleradb/sclera-plugin-matcher_2.13/scaladoc.svg)](https://javadoc.io/doc/com.scleradb/sclera-plugin-matcher_2.13)
 
 Enables Sclera to efficiently and flexibly analyze ordered streaming data.
 
